@@ -1,36 +1,35 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 class TodoList
 {
-  // Properties
+  // Свойства
   public FileStorageService fileStore;
 
-  // How to create a new instance
+  // Как создать новый экземпляр
   public TodoList(FileStorageService fileStorageService)
   {
     fileStore = fileStorageService;
   }
 
-  // Methods, what we can do with this thing
+  // Методы, что мы можем делать с этим объектом
   public List<TodoItem> GetAllTodoes()
   {
-
-
-
     return LoadTodoesFromStorage();
   }
 
   public TodoItem CreateNewTodo(TodoItemCreateInfo createInfo)
   {
-    var newTodoItem = new TodoItem(createInfo.Description, createInfo.Deadline);
+    // Используем значение важности напрямую из createInfo
+    var newTodoItem = new TodoItem(createInfo.Description, createInfo.Deadline, createInfo.Importance);
 
-    // First load existing todoes
+    // Сначала загружаем существующие задачи
     var todoItems = LoadTodoesFromStorage();
 
-    // Add the new todo item to list
+    // Добавляем новую задачу в список
     todoItems.Add(newTodoItem);
 
-    // Save new list
+    // Сохраняем новый список
     SaveTodoesToStorage(todoItems);
 
     return newTodoItem;
@@ -38,10 +37,10 @@ class TodoList
 
   public void DeleteTodo(string todoId)
   {
-    // First Load in data
+    // Сначала загружаем данные
     var todoItems = LoadTodoesFromStorage();
 
-    // Modify the list не понятно
+    // Изменяем список
     var foundTodo = todoItems
       .Find(todo => todo.Id.ToString() == todoId);
 
@@ -49,22 +48,22 @@ class TodoList
     {
       todoItems.Remove(foundTodo);
     }
-    // Store the modified list
+    // Сохраняем изменённый список
     SaveTodoesToStorage(todoItems);
   }
 
   private List<TodoItem> LoadTodoesFromStorage()
   {
-    // Read from file storage
+    // Читаем из файлового хранилища
     var todoItemsString = fileStore.Load();
 
-    // проерка на пустоту в дазе строки 
+    // Проверка на пустую строку
     if (string.IsNullOrWhiteSpace(todoItemsString))
     {
       return new List<TodoItem>();
     }
 
-    // Convert from string to list of TodoItems
+    // Преобразуем из строки в список TodoItems
     var todoItems = JsonSerializer.Deserialize<List<TodoItem>>(todoItemsString);
 
     if (todoItems == null)
@@ -81,19 +80,3 @@ class TodoList
     return fileStore.Save(todoItemsString);
   }
 }
-
-
-
-
-
-
-
-// public void DeleteCompletetTodo(string todoId)
-// {
-//   // First Load in data
-//   var todoItems = LoadTodoesFromStorage();
-
-//     todoItems.RemoveAll(todo => todo.Id.ToString() ==  todoId);
-//   // Store the modified list
-//   SaveTodoesToStorage(todoItems);
-// }
