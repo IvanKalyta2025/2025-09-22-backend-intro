@@ -16,16 +16,11 @@ class TodoItem
   public bool IsComplete { get; set; }
   public DateTime Deadline { get; set; }
   public DateTime CreatedAt { get; set; }
-  public Importance Importance { get; set; }
-
-  // 1. Конструктор по умолчанию для десериализации (если нужен)
-  public TodoItem()
-  {
-    Description = string.Empty;
-  }
+  public string Importance { get; set; }
 
 
-  public TodoItem(string description, DateTime deadline, Importance importance)
+
+  public TodoItem(string description, DateTime deadline, string importance)
   {
     if (!Enum.IsDefined(typeof(Importance), importance))
     {

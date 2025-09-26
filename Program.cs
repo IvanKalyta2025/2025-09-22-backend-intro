@@ -8,6 +8,7 @@ builder.Services.ConfigureHttpJsonOptions(options =>
   options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 
+
 builder.Services.AddSingleton<FileStorageService>();
 builder.Services.AddSingleton<TodoList>();
 

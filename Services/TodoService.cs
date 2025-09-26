@@ -1,5 +1,5 @@
 using System.Text.Json;
-using System.Text.Json.Serialization;
+using System.Text.Json.Serialization; // Можно удалить, если не используется явно, но не мешает
 
 class TodoList
 {
@@ -20,6 +20,9 @@ class TodoList
 
   public TodoItem CreateNewTodo(TodoItemCreateInfo createInfo)
   {
+
+    if (!Enum.IsDefined(typeof(Importance), createInfo.Importance))
+      throw new ArgumentException("Недопустимое значение важности.");
     // Используем значение важности напрямую из createInfo
     var newTodoItem = new TodoItem(createInfo.Description, createInfo.Deadline, createInfo.Importance);
 
