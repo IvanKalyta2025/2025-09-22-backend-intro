@@ -14,6 +14,9 @@ class TodoList
   // Methods, what we can do with this thing
   public List<TodoItem> GetAllTodoes()
   {
+
+
+
     return LoadTodoesFromStorage();
   }
 
@@ -38,7 +41,7 @@ class TodoList
     // First Load in data
     var todoItems = LoadTodoesFromStorage();
 
-    // Modify the list
+    // Modify the list не понятно
     var foundTodo = todoItems
       .Find(todo => todo.Id.ToString() == todoId);
 
@@ -46,7 +49,6 @@ class TodoList
     {
       todoItems.Remove(foundTodo);
     }
-
     // Store the modified list
     SaveTodoesToStorage(todoItems);
   }
@@ -56,7 +58,8 @@ class TodoList
     // Read from file storage
     var todoItemsString = fileStore.Load();
 
-    if (todoItemsString == null)
+    // проерка на пустоту в дазе строки 
+    if (string.IsNullOrWhiteSpace(todoItemsString))
     {
       return new List<TodoItem>();
     }
@@ -78,3 +81,19 @@ class TodoList
     return fileStore.Save(todoItemsString);
   }
 }
+
+
+
+
+
+
+
+// public void DeleteCompletetTodo(string todoId)
+// {
+//   // First Load in data
+//   var todoItems = LoadTodoesFromStorage();
+
+//     todoItems.RemoveAll(todo => todo.Id.ToString() ==  todoId);
+//   // Store the modified list
+//   SaveTodoesToStorage(todoItems);
+// }

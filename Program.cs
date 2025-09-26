@@ -15,14 +15,17 @@ app.MapGet("/todo", (TodoList todoList) =>
 // Create a new todo
 app.MapPost("/todo", (TodoList todoList, TodoItemCreateInfo createInfo) =>
 {
-  var newTodoItem = todoList.CreateNewTodo(createInfo);
 
-  return newTodoItem;
+  return todoList.CreateNewTodo(createInfo);
 });
 
 app.MapDelete("/todo/{todoId}", (TodoList todoList, string todoId) =>
 {
   todoList.DeleteTodo(todoId);
+  return Results.NoContent();
 });
 
+
+
 app.Run();
+

@@ -9,7 +9,7 @@ class FileStorageService
     return true;
   }
 
-  public string? Load()
+  public string Load()
   {
     var fileContent = File.ReadAllText(path);
     return fileContent;
